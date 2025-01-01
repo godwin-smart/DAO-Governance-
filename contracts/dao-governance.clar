@@ -292,3 +292,23 @@
         (ok true)
     )
 )
+
+;; Parameter Management
+(define-public (update-dao-parameters (new-params {
+    proposal-fee: uint,
+    min-proposal-amount: uint,
+    max-proposal-amount: uint,
+    voting-delay: uint,
+    voting-period: uint,
+    timelock-period: uint,
+    quorum-threshold: uint,
+    super-majority: uint
+}))
+    (begin
+        (asserts! (is-eq tx-sender (var-get dao-admin)) ERR-NOT-AUTHORIZED)
+        (asserts! (validate-parameters new-params) ERR-INVALID-PARAMETER)
+        (var-set dao-parameters new-params)
+        (ok true)
+    )
+)
+

@@ -58,3 +58,79 @@
         quorum-threshold: u500,       ;; 50% in basis points
         super-majority: u667          ;; 66.7% in basis points
     }
+)
+
+;; Data Storage
+;; ===========
+
+;; Member Information
+(define-map members 
+    principal 
+    {
+        voting-power: uint,
+        joined-block: uint,
+        total-contributed: uint,
+        last-withdrawal: uint
+    }
+)
+
+;; Proposal Details
+(define-map proposals 
+    uint 
+    {
+        id: uint,
+        proposer: principal,
+        title: (string-ascii 100),
+        description: (string-utf8 1000),
+        amount: uint,
+        target: principal,
+        start-block: uint,
+        end-block: uint,
+        yes-votes: uint,
+        no-votes: uint,
+        status: (string-ascii 20),
+        executed: bool
+    }
+)
+
+;; Voting Records
+(define-map votes 
+    {proposal-id: uint, voter: principal} 
+    {
+        amount: uint,
+        support: bool
+    }
+)
+
+;; Administrative Controls
+(define-map emergency-admins principal bool)
+
+;; Delegation System
+(define-map delegations
+    principal
+    {
+        delegate: principal,
+        amount: uint,
+        expiry: uint
+    }
+)
+
+;; Return Pool Management
+(define-map return-pools
+    uint
+    {
+        total-amount: uint,
+        distributed-amount: uint,
+        distribution-start: uint,
+        distribution-end: uint,
+        claims: (list 200 principal)
+    }
+)
+
+(define-map member-claims
+    {member: principal, pool-id: uint}
+    {
+        amount: uint,
+        claimed: bool
+    }
+)
